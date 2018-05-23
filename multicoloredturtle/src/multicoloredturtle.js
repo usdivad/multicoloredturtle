@@ -112,7 +112,8 @@ class TurtleAnklebone {
 
 
 class Player {
-    constructor() {
+    constructor(name) {
+        this.name = name;
         this.collectedOrgans = [];
     }
 
@@ -131,6 +132,10 @@ class Player {
             this.collectedOrgans.splice(i, 1);
         }
     }
+
+    getName() {
+        return name;
+    }
 }
 
 
@@ -145,15 +150,25 @@ $(document).ready(function() {
 
 var turtle = new Turtle();
 
-var player1 = new Player();
-var player2 = new Player(); // TODO: Deal with more or fewer players
+var player1 = new Player("Player 1");
+var player2 = new Player("Player 2"); // TODO: Deal with more or fewer players
 var currDiceRoll = 6;
 var currPlayer = player1;
 var hasMouseDownOccurred = false;
 
-function setup() {
-    createCanvas(800, 600);
+var bebas;
+var myriad;
 
+function preload() {
+    bebas = loadFont("fonts/BebasKai-Regular.otf");
+    myriad = loadFont("fonts/MyriadPro-Regular.otf");
+}
+
+function setup() {
+    createCanvas(1100, 600);
+
+
+    // TURTLE
 
     // Spine
     turtle.addOrgan("spine1", new TurtleOrgan(400, 240, "#4b9130", [
@@ -323,12 +338,46 @@ function setup() {
             new TurtleAnklebone(0, 0),
         ]));
 
+
+
+
+
+    // PLAYER
+
+
 }
 
 function draw() {
+    // Setup
     background("#ffe5aa"); // #d4b46a
 
+    // Turtle
     turtle.redrawOrgans();
+
+    // Text headings
+    var textX = 960;
+
+    fill("#d4b46a");
+    rect(0, 0, 80, 600);
+    rect(1100-80, 0, 80, 600);
+
+    textFont(bebas);
+    fill("#484848");
+    noStroke();
+    textAlign(RIGHT);
+
+    textSize(32);
+    text("Alag Melkhii", textX, 50);
+
+    textSize(24);
+    text("(Multicolored Turtle)", textX, 75);
+
+
+    // Player text
+    var turnMsg = currPlayer.name + "'s turn";
+    textFont(myriad);
+    textSize(18);
+    text(turnMsg, textX, 125);
 }
 
 function mousePressed() {
