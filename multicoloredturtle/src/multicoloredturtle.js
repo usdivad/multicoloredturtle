@@ -93,7 +93,7 @@ class TurtleOrgan {
                     currPlayer.removeOrgan(this.anklebones.length);
                 }
                 else {
-                    notifyPlayer("You don't have the anklebones for this organ");
+                    notifyPlayer("You don't have the anklebones for this organ type");
                 }
             }
         }
@@ -155,6 +155,7 @@ function setup() {
     createCanvas(800, 600);
 
 
+    // Spine
     turtle.addOrgan("spine1", new TurtleOrgan(400, 240, "#4b9130", [
             new TurtleAnklebone(120, 0),
             new TurtleAnklebone(90, 0),
@@ -207,6 +208,65 @@ function setup() {
             new TurtleAnklebone(-60, 0),
             new TurtleAnklebone(-90, 0),
             new TurtleAnklebone(-120, 0),
+        ]));
+
+
+    // Legs
+    turtle.addOrgan("leg1", new TurtleOrgan(240, 200, "#484848", [
+            new TurtleAnklebone(30, 0),
+            new TurtleAnklebone(-30, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+    turtle.addOrgan("leg2", new TurtleOrgan(560, 200, "#484848", [
+            new TurtleAnklebone(30, 0),
+            new TurtleAnklebone(-30, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+    turtle.addOrgan("leg3", new TurtleOrgan(240, 480, "#484848", [
+            new TurtleAnklebone(30, 0),
+            new TurtleAnklebone(-30, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+    turtle.addOrgan("leg4", new TurtleOrgan(560, 480, "#484848", [
+            new TurtleAnklebone(30, 0),
+            new TurtleAnklebone(-30, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+
+    turtle.addOrgan("foot1", new TurtleOrgan(180, 140, "#a39675", [
+            new TurtleAnklebone(5, 5),
+            new TurtleAnklebone(40, -10),
+            new TurtleAnklebone(-10, 40),
+            new TurtleAnklebone(80, -10),
+            new TurtleAnklebone(-10, 80),
+        ]));
+
+    turtle.addOrgan("foot2", new TurtleOrgan(620, 140, "#a39675", [
+            new TurtleAnklebone(-5, 5),
+            new TurtleAnklebone(-40, -10),
+            new TurtleAnklebone(10, 40),
+            new TurtleAnklebone(-80, -10),
+            new TurtleAnklebone(10, 80),
+        ]));
+
+    turtle.addOrgan("foot3", new TurtleOrgan(180, 540, "#a39675", [
+            new TurtleAnklebone(5, -5),
+            new TurtleAnklebone(40, 10),
+            new TurtleAnklebone(-10, -40),
+            new TurtleAnklebone(80, 10),
+            new TurtleAnklebone(-10, -80),
+        ]));
+
+    turtle.addOrgan("foot4", new TurtleOrgan(620, 540, "#a39675", [
+            new TurtleAnklebone(-5, -5),
+            new TurtleAnklebone(-40, 10),
+            new TurtleAnklebone(10, -40),
+            new TurtleAnklebone(-80, 10),
+            new TurtleAnklebone(10, -80),
         ]));
 
 }
