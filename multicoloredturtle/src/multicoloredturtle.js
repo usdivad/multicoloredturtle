@@ -273,7 +273,7 @@ function setup() {
 
 
     // Neck
-    turtle.addOrgan("neck", new TurtleOrgan(400, 180, "#45101c", [
+    turtle.addOrgan("neck", new TurtleOrgan(400, 180, "#821b18", [
             new TurtleAnklebone(-20, 0),
             new TurtleAnklebone(-20, 30),
             new TurtleAnklebone(-20, -30),
@@ -304,6 +304,23 @@ function setup() {
             new TurtleAnklebone(0, 0),
             new TurtleAnklebone(0, 30),
             new TurtleAnklebone(0, -30),
+        ]));
+
+
+    // Heart
+    turtle.addOrgan("heart", new TurtleOrgan(400, 300, "#aa005a", [
+            new TurtleAnklebone(0, 0),
+        ]));
+
+    // Kidneys
+    turtle.addOrgan("kidneys", new TurtleOrgan(400, 380, "#fb9ecf", [
+            new TurtleAnklebone(-20, 0),
+            new TurtleAnklebone(20, 0),
+        ]));
+
+    // Bladder
+    turtle.addOrgan("bladder", new TurtleOrgan(400, 420, "#429285", [
+            new TurtleAnklebone(0, 0),
         ]));
 
 }
