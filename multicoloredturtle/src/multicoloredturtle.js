@@ -273,15 +273,13 @@ function setup() {
 
 
     // Neck
-    turtle.addOrgan("neck1", new TurtleOrgan(380, 180, "#45101c", [
-            new TurtleAnklebone(0, 0),
-            new TurtleAnklebone(0, 30),
-            new TurtleAnklebone(0, -30),
-        ]));
-    turtle.addOrgan("neck2", new TurtleOrgan(420, 180, "#45101c", [
-            new TurtleAnklebone(0, 0),
-            new TurtleAnklebone(0, 30),
-            new TurtleAnklebone(0, -30),
+    turtle.addOrgan("neck", new TurtleOrgan(400, 180, "#45101c", [
+            new TurtleAnklebone(-20, 0),
+            new TurtleAnklebone(-20, 30),
+            new TurtleAnklebone(-20, -30),
+            new TurtleAnklebone(20, 0),
+            new TurtleAnklebone(20, 30),
+            new TurtleAnklebone(20, -30),
         ]));
 
     // Head
