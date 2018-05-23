@@ -32,34 +32,43 @@ class TurtleOrgan {
         if (!this.collected) {
             noStroke();
             fill(this.fill);
+        }
+        else {
+            noFill();
+            stroke("#d4b46a");
+        }
 
-            var isMouseover = false;
+        var isMouseover = false;
 
-            // Do initial draw
+        // Do initial draw
+        for (var i=0; i<this.anklebones.length; i++) {
+            var anklebone = this.anklebones[i];
+            var x = this.x + anklebone.x;
+            var y = this.y + anklebone.y;
+            var h = 20;
+
+            ellipse(x, y, h);
+
+            if (mouseX >= x-h && mouseY >= y-h &&
+                mouseX <= x+h && mouseY <= y+h) {
+                isMouseover = true;
+            }
+        }
+
+        // Do mouse hover draw
+        if (isMouseover) {
             for (var i=0; i<this.anklebones.length; i++) {
                 var anklebone = this.anklebones[i];
                 var x = this.x + anklebone.x;
                 var y = this.y + anklebone.y;
-                var h = 20;
+                var h = 25;
 
                 ellipse(x, y, h);
-
-                if (mouseX >= x-h && mouseY >= y-h &&
-                    mouseX <= x+h && mouseY <= y+h) {
-                    isMouseover = true;
-                }
             }
 
-            // Do mouse hover draw
-            if (isMouseover) {
-                for (var i=0; i<this.anklebones.length; i++) {
-                    var anklebone = this.anklebones[i];
-                    var x = this.x + anklebone.x;
-                    var y = this.y + anklebone.y;
-                    var h = 25;
-
-                    ellipse(x, y, h);
-                }
+            if (hasMouseDownOccurred && mouseIsPressed) {
+                this.handlePlayerInteraction();
+                hasMouseDownOccurred = false
             }
         }
     }
@@ -70,6 +79,27 @@ class TurtleOrgan {
 
     setCollected(collected) {
         this.collected = collected;
+    }
+
+    handlePlayerInteraction() {
+        if (currDiceRoll == this.anklebones.length) {
+            if (!this.collected) {
+                this.setCollected(true);
+                currPlayer.addOrgan(this.anklebones.length);
+            }
+            else {
+                if (currPlayer.hasOrgan(this.anklebones.length)) {
+                    this.setCollected(false);
+                    currPlayer.removeOrgan(this.anklebones.length);
+                }
+                else {
+                    notifyPlayer("You don't have the anklebones for this organ");
+                }
+            }
+        }
+        else {
+            notifyPlayer("Sorry, this organ has " + this.anklebones.length + " anklebones, while you rolled a " + currDiceRoll);
+        }
     }
 }
 
@@ -86,10 +116,23 @@ class Player {
         this.collectedOrgans = [];
     }
 
-    hasOrgan(name) {
+    hasOrgan(n) {
+        var i = this.collectedOrgans.indexOf(n);
+        return (i > -1);
+    }
 
+    addOrgan(n) {
+        this.collectedOrgans.push(n);
+    }
+
+    removeOrgan(n) {
+        var i = this.collectedOrgans.indexOf(n);
+        if (i > -1) {
+            this.collectedOrgans.splice(i, 1);
+        }
     }
 }
+
 
 $(document).ready(function() {
     console.log("Alag Melkhii!");
@@ -98,8 +141,15 @@ $(document).ready(function() {
 
 
 // ================================
+// Core loop
 
 var turtle = new Turtle();
+
+var player1 = new Player();
+var player2 = new Player(); // TODO: Deal with more or fewer players
+var currDiceRoll = 6;
+var currPlayer = player1;
+var hasMouseDownOccurred = false;
 
 function setup() {
     createCanvas(800, 600);
@@ -165,4 +215,17 @@ function draw() {
     background("#ffe5aa"); // #d4b46a
 
     turtle.redrawOrgans();
+}
+
+function mousePressed() {
+    hasMouseDownOccurred = true;
+}
+
+
+
+
+// ========
+
+function notifyPlayer(msg) {
+    alert(msg); // TODO: Make this a separate panel or something
 }
