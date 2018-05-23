@@ -33,13 +33,33 @@ class TurtleOrgan {
             noStroke();
             fill(this.fill);
 
+            var isMouseover = false;
+
+            // Do initial draw
             for (var i=0; i<this.anklebones.length; i++) {
                 var anklebone = this.anklebones[i];
                 var x = this.x + anklebone.x;
                 var y = this.y + anklebone.y;
+                var h = 20;
 
+                ellipse(x, y, h);
 
-                ellipse(x, y, 25);
+                if (mouseX >= x-h && mouseY >= y-h &&
+                    mouseX <= x+h && mouseY <= y+h) {
+                    isMouseover = true;
+                }
+            }
+
+            // Do mouse hover draw
+            if (isMouseover) {
+                for (var i=0; i<this.anklebones.length; i++) {
+                    var anklebone = this.anklebones[i];
+                    var x = this.x + anklebone.x;
+                    var y = this.y + anklebone.y;
+                    var h = 25;
+
+                    ellipse(x, y, h);
+                }
             }
         }
     }
@@ -60,6 +80,17 @@ class TurtleAnklebone {
     }
 }
 
+
+class Player {
+    constructor() {
+        this.collectedOrgans = [];
+    }
+
+    hasOrgan(name) {
+
+    }
+}
+
 $(document).ready(function() {
     console.log("Alag Melkhii!");
 });
@@ -74,58 +105,58 @@ function setup() {
     createCanvas(800, 600);
 
 
-    turtle.addOrgan("spine1", new TurtleOrgan(300, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine1", new TurtleOrgan(400, 240, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
-    turtle.addOrgan("spine2", new TurtleOrgan(330, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine2", new TurtleOrgan(400, 280, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
-    turtle.addOrgan("spine3", new TurtleOrgan(360, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine3", new TurtleOrgan(400, 320, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
-    turtle.addOrgan("spine4", new TurtleOrgan(440, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine4", new TurtleOrgan(400, 360, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
-    turtle.addOrgan("spine5", new TurtleOrgan(470, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine5", new TurtleOrgan(400, 400, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
-    turtle.addOrgan("spine6", new TurtleOrgan(500, 300, "#4b9130", [
-            new TurtleAnklebone(0, 75),
-            new TurtleAnklebone(0, 45),
-            new TurtleAnklebone(0, 15),
-            new TurtleAnklebone(0, -15),
-            new TurtleAnklebone(0, -45),
-            new TurtleAnklebone(0, -75),
+    turtle.addOrgan("spine6", new TurtleOrgan(400, 440, "#4b9130", [
+            new TurtleAnklebone(120, 0),
+            new TurtleAnklebone(90, 0),
+            new TurtleAnklebone(60, 0),
+            new TurtleAnklebone(-60, 0),
+            new TurtleAnklebone(-90, 0),
+            new TurtleAnklebone(-120, 0),
         ]));
 
 }
