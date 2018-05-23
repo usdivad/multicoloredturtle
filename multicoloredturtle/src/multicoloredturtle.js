@@ -237,6 +237,8 @@ function setup() {
             new TurtleAnklebone(0, -30),
         ]));
 
+
+    // Feet
     turtle.addOrgan("foot1", new TurtleOrgan(180, 140, "#a39675", [
             new TurtleAnklebone(5, 5),
             new TurtleAnklebone(40, -10),
@@ -267,6 +269,43 @@ function setup() {
             new TurtleAnklebone(10, -40),
             new TurtleAnklebone(-80, 10),
             new TurtleAnklebone(10, -80),
+        ]));
+
+
+    // Neck
+    turtle.addOrgan("neck1", new TurtleOrgan(380, 180, "#45101c", [
+            new TurtleAnklebone(0, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+    turtle.addOrgan("neck2", new TurtleOrgan(420, 180, "#45101c", [
+            new TurtleAnklebone(0, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+
+    // Head
+    turtle.addOrgan("head", new TurtleOrgan(400, 80, "#ffc80e", [
+            new TurtleAnklebone(0, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
+        ]));
+
+    // Eyes and ears
+    turtle.addOrgan("eyes", new TurtleOrgan(400, 40, "#026db3", [
+            new TurtleAnklebone(45, 0),
+            new TurtleAnklebone(-45, 0),
+        ]));
+    turtle.addOrgan("ears", new TurtleOrgan(400, 100, "#ff7600", [
+            new TurtleAnklebone(45, 0),
+            new TurtleAnklebone(-45, 0),
+        ]));
+
+    // Tail
+    turtle.addOrgan("tail", new TurtleOrgan(400, 500, "#ffa80e", [
+            new TurtleAnklebone(0, 0),
+            new TurtleAnklebone(0, 30),
+            new TurtleAnklebone(0, -30),
         ]));
 
 }
