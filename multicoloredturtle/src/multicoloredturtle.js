@@ -84,13 +84,20 @@ class TurtleOrgan {
     handlePlayerInteraction() {
         if (currDiceRoll == this.anklebones.length) {
             if (!this.collected) {
-                this.setCollected(true);
-                currPlayer.addOrgan(this.anklebones.length);
+                if (currPlayerTurnAnklebones == 0) {
+                    this.setCollected(true);
+                    currPlayer.addOrgan(this.anklebones.length);
+                    currPlayerTurnAnklebones += this.anklebones.length;
+                }
+                else {
+                    notifyPlayer("You may only collect one organ per turn; to change your choice, put your selected organ back and then re-select");
+                }
             }
             else {
-                if (currPlayer.hasOrgan(this.anklebones.length)) {
+                if (currPlayer.hasOrgan(this.anklebones.length) && currPlayerTurnAnklebones >= this.anklebones.length) {
                     this.setCollected(false);
                     currPlayer.removeOrgan(this.anklebones.length);
+                    currPlayerTurnAnklebones -= this.anklebones.length;
                 }
                 else {
                     notifyPlayer("You don't have the anklebones for this organ type");
@@ -148,16 +155,41 @@ $(document).ready(function() {
 // ================================
 // Core loop
 
+// Turtle
 var turtle = new Turtle();
 
+// Player, game logic
 var player1 = new Player("Player 1");
 var player2 = new Player("Player 2"); // TODO: Deal with more or fewer players
 var currDiceRoll = 6;
 var currPlayer = player1;
 var hasMouseDownOccurred = false;
+var hasPlayerRolledDice = false;
+//var canPlayerEndTurn = false;
+var currPlayerTurnAnklebones = 0;
 
+// Text
 var bebas;
 var myriad;
+var textX = 960;
+var textColor = "#484848";
+var buttonColor = "#a3834c";
+var buttonColorHover = "#315a66";
+// var buttonTextColor = "#cfcfce";
+
+var rollDiceButtonParams = {
+    "x": textX-80-5,
+    "y": 145,
+    "w": 84,
+    "h": 30
+};
+
+var endTurnButtonParams = {
+    "x": textX-80-5,
+    "y": 280,
+    "w": 84,
+    "h": 30
+}
 
 function preload() {
     bebas = loadFont("fonts/BebasKai-Regular.otf");
@@ -354,15 +386,17 @@ function draw() {
     // Turtle
     turtle.redrawOrgans();
 
-    // Text headings
-    var textX = 960;
-
+    // Scroll
     fill("#d4b46a");
     rect(0, 0, 80, 600);
     rect(1100-80, 0, 80, 600);
 
+
+    // TEXT
+
+    // Game headings
     textFont(bebas);
-    fill("#484848");
+    fill(textColor);
     noStroke();
     textAlign(RIGHT);
 
@@ -378,17 +412,131 @@ function draw() {
     textFont(myriad);
     textSize(18);
     text(turnMsg, textX, 125);
+
+    // Roll dice
+    if (!hasPlayerRolledDice) {
+        var rollDiceButtonColor = textColor;
+        // fill(buttonColor);
+
+        if (isMouseOverRollDiceButton()) {
+            rollDiceButtonColor = "#d4b46a";
+        }
+
+        stroke(rollDiceButtonColor);
+        strokeWeight(3);
+        noFill();
+        rect(rollDiceButtonParams.x, rollDiceButtonParams.y, rollDiceButtonParams.w, rollDiceButtonParams.h);
+        strokeWeight(1);
+        noStroke();
+
+        fill(rollDiceButtonColor);
+        textFont(bebas);
+        textSize(24);
+        text("Roll Dice", textX-5, 170);
+    }
+    else {
+        textFont(myriad);
+        textSize(18);
+        text("You rolled a ", textX-15, 170);
+
+        textFont(bebas);
+        textSize(24);
+        text("" + currDiceRoll, textX, 170);
+
+        textFont(myriad);
+        textSize(18);
+        text("Click on turtle organs to", textX, 215);
+        text("collect/return them", textX, 240);
+
+        if (canPlayerEndTurn()) {
+            var endTurnButtonColor = textColor;
+            // fill(buttonColor);
+
+            if (isMouseOverEndTurnButton()) {
+                endTurnButtonColor = "#d4b46a";
+            }
+
+            stroke(endTurnButtonColor);
+            strokeWeight(3);
+            noFill();
+            rect(endTurnButtonParams.x, endTurnButtonParams.y, endTurnButtonParams.w, endTurnButtonParams.h);
+            strokeWeight(1);
+            noStroke();
+
+            fill(endTurnButtonColor);
+            textFont(bebas);
+            textSize(24);
+            text("End Turn", textX-5, endTurnButtonParams.y+25);
+        }
+    }
+
+
+    // // Turtle text (bottom)
+    // if (hasPlayerRolledDice) {
+    //     textFont(myriad);
+    //     textAlign(CENTER);
+    //     textSize(14);
+    //     text("Click on turtle organs to collect/return them", 400, 590);
+    // }
+
+    // Reset
+    fill(textColor);
 }
 
 function mousePressed() {
     hasMouseDownOccurred = true;
+
+    if (isMouseOverRollDiceButton()) {
+        rollDice();
+    }
+
+    if (isMouseOverEndTurnButton()) {
+        endTurn();
+    }
 }
 
 
 
 
 // ========
+// Utility functions and stuff
 
 function notifyPlayer(msg) {
     alert(msg); // TODO: Make this a separate panel or something
 }
+
+function isMouseOverRollDiceButton() {
+    return (mouseX >= rollDiceButtonParams.x && mouseY >= rollDiceButtonParams.y &&
+            mouseX <= rollDiceButtonParams.x + rollDiceButtonParams.w && mouseY <= rollDiceButtonParams.y + rollDiceButtonParams.h &&
+            !hasPlayerRolledDice);
+}
+
+function rollDice() {
+    currDiceRoll = Math.floor(Math.random() * 6) + 1;
+    hasPlayerRolledDice = true;
+}
+
+function canPlayerEndTurn() {
+    return (currPlayerTurnAnklebones == currDiceRoll); // TODO: Handle return turn
+}
+
+function isMouseOverEndTurnButton() {
+    return (mouseX >= endTurnButtonParams.x && mouseY >= endTurnButtonParams.y &&
+            mouseX <= endTurnButtonParams.x + endTurnButtonParams.w && mouseY <= endTurnButtonParams.y + endTurnButtonParams.h &&
+            canPlayerEndTurn());
+}
+
+function endTurn() {
+    if (currPlayer.name == "Player 1") {
+        currPlayer = player2;
+    }
+    else {
+        currPlayer = player1;
+    }
+
+    currDiceRoll = 0;
+    hasPlayerRolledDice = false;
+    currPlayerTurnAnklebones = 0;
+}
+
+
