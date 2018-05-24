@@ -184,7 +184,7 @@ var turtle = new Turtle();
 // Player, game logic
 var player1 = new Player("Player 1");
 var player2 = new Player("Player 2"); // TODO: Deal with more or fewer players
-var currDiceRoll = 6;
+var currDiceRoll = 0;
 var currPlayer = player1;
 var hasMouseDownOccurred = false;
 var hasPlayerRolledDice = false;
@@ -568,7 +568,7 @@ function isMouseOverRollDiceButton() {
 
 function rollDice() {
     currDiceRoll = Math.floor(Math.random() * 6) + 1;
-    currDiceRoll = 1;
+    // currDiceRoll = 1;
     hasPlayerRolledDice = true;
 }
 
