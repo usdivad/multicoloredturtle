@@ -82,6 +82,11 @@ class TurtleOrgan {
     }
 
     handlePlayerInteraction() {
+        if (currDiceRoll < 1) {
+            notifyPlayer("Please roll dice before choosing organs");
+            return;
+        }
+
         if (currDiceRoll == this.anklebones.length) {
             if (!this.collected) {
                 if (currPlayerTurnAnklebones == 0) {
