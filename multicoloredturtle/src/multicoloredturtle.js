@@ -27,6 +27,19 @@ class Turtle {
         }
         return false;
     }
+
+    areAllOrgansCollected() {
+        var numCollected = 0;
+        var numOrgans = 0;
+        for (name in this.organs) {
+            var organ = this.organs[name];
+            if (organ.collected) {
+                numCollected += 1;
+            }
+            numOrgans += 1;
+        }
+        return (numCollected == numOrgans);
+    }
 }
 
 class TurtleOrgan {
@@ -444,6 +457,27 @@ function draw() {
     textSize(24);
     text("(Multicolored Turtle)", textX, 75);
 
+    if (turtle.areAllOrgansCollected()) {
+        var winner = determineWinner();
+        var endMsg = winner + " wins!";
+        if (winner == "") {
+            endMsg = "It's a tie!";
+        }
+        textFont(myriad);
+        textSize(24);
+        if (winner == "Player 1") {
+            fill("#821b18");
+            stroke("#821b18");
+        }
+        else {
+            fill("#429285");
+            stroke("#429285");
+        }
+        strokeWeight(1);
+        text(endMsg, textX, 125);
+        return;   
+    }
+
 
     // Player text
     var turnMsg = currPlayer.name + "'s turn";
@@ -653,6 +687,20 @@ function endTurn() {
     currPlayerTurnDebt = 0;
     justRolledDice = false;
     mode = "";
+}
+
+function determineWinner() {
+    var player1Score = player1.collectedOrgans.reduce(function(t,v) {return t+v;}, 0);
+    var player2Score = player2.collectedOrgans.reduce(function(t,v) {return t+v;}, 0);
+
+    if (player1Score > player2Score) {
+        return player1.name;
+    }
+    else if (player2Score > player1Score) {
+        return player2.name;
+    }
+
+    return "";
 }
 
 
