@@ -206,14 +206,14 @@ var buttonColorHover = "#315a66";
 
 var rollDiceButtonParams = {
     "x": textX-80-5,
-    "y": 145,
+    "y": 155,
     "w": 84,
     "h": 30
 };
 
 var endTurnButtonParams = {
     "x": textX-80-5,
-    "y": 280,
+    "y": 420,
     "w": 84,
     "h": 30
 }
@@ -437,8 +437,19 @@ function draw() {
     // Player text
     var turnMsg = currPlayer.name + "'s turn";
     textFont(myriad);
-    textSize(18);
+    textSize(20);
+    if (currPlayer.name == "Player 1") {
+        fill("#821b18");
+        stroke("#821b18");
+    }
+    else {
+        fill("#429285");
+        stroke("#429285");
+    }
+    strokeWeight(1);
     text(turnMsg, textX, 125);
+    fill(textColor);
+    noStroke();
 
     // Roll dice
     if (!hasPlayerRolledDice) {
@@ -459,7 +470,7 @@ function draw() {
         fill(rollDiceButtonColor);
         textFont(bebas);
         textSize(24);
-        text("Roll Dice", textX-5, 170);
+        text("Roll Dice", textX-5, rollDiceButtonParams.y + 25);
     }
     else {
         textFont(myriad);
@@ -472,8 +483,14 @@ function draw() {
 
         textFont(myriad);
         textSize(18);
-        text("Click on turtle organs to", textX, 215);
-        text("collect/return them", textX, 240);
+        text("Sizes of your collected organs: ", textX, 215);
+
+        textFont(bebas);
+        textSize(24);
+        var organSizes = currPlayer.collectedOrgans.join(", ");
+        if (organSizes.length == 0) organSizes = "N/A";
+        text(organSizes, textX, 250);
+
 
         // Instructions text
         // var instructionsText = "";
@@ -481,19 +498,22 @@ function draw() {
             if (turtle.hasOrgansOfSize(currDiceRoll)) {
                 currPlayerTurnAnklebones = 0;
                 // currPlayerTurnDebt = currDiceRoll;
-                instructionsText = "There are still organs left of size " + currDiceRoll + ", so you can collect one";
+                //instructionsText = "There are still organs left of size " + currDiceRoll + ", so you can collect one";
+                instructionsText = "You can collect an organ this turn";
                 mode = "collect";
             }
             else if (currPlayer.hasOrgan(currDiceRoll)) {
                 currPlayerTurnAnklebones = currDiceRoll;
                 // currPlayerTurnDebt = currDiceRoll;
-                instructionsText = "There are no organs left of size " + currDiceRoll + ", so you must return one";
+                // instructionsText = "There are no organs left of size " + currDiceRoll + ", so you must return one";
+                instructionsText = "You must return an organ this turn";
                 mode = "return";
             }
             else {
                 currPlayerTurnAnklebones = currDiceRoll;
                 // currPlayerTurnDebt = 0;
-                instructionsText = "There are no organs left of size " + currDiceRoll + ", and you don't have one; you can't do anything";
+                // instructionsText = "There are no organs left of size " + currDiceRoll + ", and you don't have one; you can't do anything";
+                instructionsText = "You are unable to act this turn";
                 mode = "skip";
             }
             console.log(instructionsText);
@@ -501,6 +521,20 @@ function draw() {
             justRolledDice = true;
         }
 
+
+        var textP2Offset = 20;
+
+        textFont(myriad);
+        textSize(18);
+        stroke(textColor);
+        strokeWeight(1);
+        text(instructionsText, textX, 295 + textP2Offset);
+
+        textFont(myriad);
+        textSize(18);
+        noStroke();
+        text("Click on turtle organs to", textX, 340 + textP2Offset);
+        text("collect/return them", textX, 365 + textP2Offset);
         
 
         if (canPlayerEndTurn()) {
@@ -521,7 +555,7 @@ function draw() {
             fill(endTurnButtonColor);
             textFont(bebas);
             textSize(24);
-            text("End Turn", textX-5, endTurnButtonParams.y+25);
+            text("End Turn", textX-5, endTurnButtonParams.y + 25);
         }
     }
 
