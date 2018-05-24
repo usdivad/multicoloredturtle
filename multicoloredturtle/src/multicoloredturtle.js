@@ -16,6 +16,17 @@ class Turtle {
             this.organs[name].redraw();
         }
     }
+
+    hasOrgansOfSize(n) {
+        // var hasOrgans = false;
+        for (name in this.organs) {
+            var organ = this.organs[name];
+            if (!organ.collected && organ.anklebones.length == n) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 class TurtleOrgan {
@@ -102,7 +113,14 @@ class TurtleOrgan {
                 if (currPlayer.hasOrgan(this.anklebones.length) && currPlayerTurnAnklebones >= this.anklebones.length) {
                     this.setCollected(false);
                     currPlayer.removeOrgan(this.anklebones.length);
-                    currPlayerTurnAnklebones -= this.anklebones.length;
+
+                    // Do debt first, then ankles
+                    //if (currPlayerTurnDebt <= 0) {
+                        currPlayerTurnAnklebones -= this.anklebones.length;
+                    //}
+                    //else {
+                    //    currPlayerTurnDebt -= this.anklebones.length;
+                    //}
                 }
                 else {
                     notifyPlayer("You don't have the anklebones for this organ type");
@@ -172,6 +190,10 @@ var hasMouseDownOccurred = false;
 var hasPlayerRolledDice = false;
 //var canPlayerEndTurn = false;
 var currPlayerTurnAnklebones = 0;
+var currPlayerTurnDebt = 0;
+var justRolledDice = false;
+var instructionsText = "";
+var mode = "";
 
 // Text
 var bebas;
@@ -453,6 +475,34 @@ function draw() {
         text("Click on turtle organs to", textX, 215);
         text("collect/return them", textX, 240);
 
+        // Instructions text
+        // var instructionsText = "";
+        if (!justRolledDice) {
+            if (turtle.hasOrgansOfSize(currDiceRoll)) {
+                currPlayerTurnAnklebones = 0;
+                // currPlayerTurnDebt = currDiceRoll;
+                instructionsText = "There are still organs left of size " + currDiceRoll + ", so you can collect one";
+                mode = "collect";
+            }
+            else if (currPlayer.hasOrgan(currDiceRoll)) {
+                currPlayerTurnAnklebones = currDiceRoll;
+                // currPlayerTurnDebt = currDiceRoll;
+                instructionsText = "There are no organs left of size " + currDiceRoll + ", so you must return one";
+                mode = "return";
+            }
+            else {
+                currPlayerTurnAnklebones = currDiceRoll;
+                // currPlayerTurnDebt = 0;
+                instructionsText = "There are no organs left of size " + currDiceRoll + ", and you don't have one; you can't do anything";
+                mode = "skip";
+            }
+            console.log(instructionsText);
+
+            justRolledDice = true;
+        }
+
+        
+
         if (canPlayerEndTurn()) {
             var endTurnButtonColor = textColor;
             // fill(buttonColor);
@@ -518,11 +568,21 @@ function isMouseOverRollDiceButton() {
 
 function rollDice() {
     currDiceRoll = Math.floor(Math.random() * 6) + 1;
+    currDiceRoll = 1;
     hasPlayerRolledDice = true;
 }
 
 function canPlayerEndTurn() {
-    return (currPlayerTurnAnklebones == currDiceRoll); // TODO: Handle return turn
+    // return (currPlayerTurnAnklebones == currDiceRoll || currPlayerTurnDebt == 0);
+    if (mode == "collect") {
+        return (currPlayerTurnAnklebones == currDiceRoll);
+    }
+    else if (mode == "return") {
+        return (currPlayerTurnAnklebones == 0);
+    }
+    else {
+        return true;
+    }
 }
 
 function isMouseOverEndTurnButton() {
@@ -542,6 +602,10 @@ function endTurn() {
     currDiceRoll = 0;
     hasPlayerRolledDice = false;
     currPlayerTurnAnklebones = 0;
+    currPlayerTurnDebt = 0;
+    justRolledDice = false;
+    mode = "";
 }
+
 
 
